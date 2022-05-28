@@ -1,38 +1,111 @@
-# create-svelte
+# Svelte Shift Select
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+A <a href="https://svelte.dev">Svelte</a> action to mutli-select checkboxes with shift-click
 
-## Creating a project
+[See the Demo](https://anotherempty.github.io/svelte-shift-select/)
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Installation
 
-```bash
-# create a new project in the current directory
-npm init svelte
-
-# create a new project in my-app
-npm init svelte my-app
+```sh
+npm install svelte-shift-select
 ```
 
-## Developing
+## Usage
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Default usage example
 
-```bash
-npm run dev
+```svelte
+<script>
+  import shiftSelect from "svelte-shift-select";
+  let someValues = [];
+</script>
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+<label>
+  <input type="checkbox" bind:group={someValues} name="checkboxes" use:shiftSelect value={1}>
+  Checkbox 1
+</label>
+<label>
+  <input type="checkbox" bind:group={someValues} name="checkboxes" use:shiftSelect value={2}>
+  Checkbox 2
+</label>
+<label>
+  <input type="checkbox" bind:group={someValues} name="checkboxes" use:shiftSelect value={3}>
+  Checkbox 3
+</label>
+<label>
+  <input type="checkbox" bind:group={someValues} name="checkboxes" use:shiftSelect value={4}>
+  Checkbox 4
+</label>
+```
+***Note***: <br>
+The checkbox input must have a **name** attribute. The action will automatically look for all the chekboxes with the same **name** attribute. <br>
+A shift click triggers a _change_ event, but can be deactivated by setting the **change** parameter to *false*.
+```svelte
+<input type="checkbox" name="checkboxes" use:shiftSelect={{ change: false }}>
 ```
 
-## Building
+### Example using array
 
-To create a production version of your app:
+```svelte
+<script>
+  import shiftSelect from "svelte-shift-select";
 
-```bash
-npm run build
+  let items = new Array(30).fill(0).map((x, i) => ({
+    id: i,
+    checked: false,
+  }));
+</script>
+
+{#each items as item, index}
+  <label>
+    <input
+      type="checkbox"
+      name="checkboxes"
+      use:shiftSelect={{ checkboxes: items, index }}
+    />
+    {item.id}
+  </label>
+{/each}
 ```
+***Note***: <br>
+If an array is provided for the **checkboxes** parameter, the action will use it instead of the checkbox-input nodes to set the *checked* value. So the provided array must be an array of object containing a **checked** property.
 
-You can preview the production build with `npm run preview`.
+### Can work with [svelte-tiny-virtual-list](https://github.com/Skayo/svelte-tiny-virtual-list)
+```svelte
+<script>
+  import VirtualList from 'svelte-tiny-virtual-list';
+  import shiftSelect from "svelte-shift-select";
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+  let items = new Array(30).fill(0).map((x, i) => ({
+    id: i,
+    checked: false,
+  }));
+</script>
+
+<VirtualList width="100%" height={300} itemCount={items.length} itemSize={22}>
+  <label slot="item" let:index let:style {style}>
+    <input
+      type="checkbox"
+      name="checkboxes"
+      bind:checked={items[index].checked}
+      use:shiftSelect={{ checkboxes: items, index }}
+    />
+    {item.id}
+  </label>
+</VirtualList>
+```
+***Note***: <br>
+An array must be provided to the **checkboxes** parameter, an integer to the **index** parameter and each input must be binded to the provided array.
+
+## Props
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `bind` | `boolean` | **Optional** but **Required** if the checked attribute of the input is binded and the action isn't using an array of object. Defaults to *`false`*. |
+| `change` | `boolean` | **Optional**. Is used to set whether to trigger a *change* when changing the checked attribute of each checkboxes after a Shift-Click. Defaults to *`true`*. |
+| `checkboxes` | `array` | **Optional** but **Required** if used with [svelte-tiny-virtual-list](https://github.com/Skayo/svelte-tiny-virtual-list). Default value is *`undefined`*. |
+| `index` | `integer` | **Optional** but **Required** if the **checkboxes** parameter is set. Defaults to *`undefined`*. |
+
+## License
+
+Distributed under the MIT License. 
