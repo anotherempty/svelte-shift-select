@@ -1,5 +1,5 @@
 {
-	"name": "package",
+	"name": "svelte-shift-select",
 	"version": "0.0.1",
 	"description": "A Svelte action to mutli-select checkboxes with shift-click",
 	"keywords": [
