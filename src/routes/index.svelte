@@ -1,2 +1,10 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+	import shiftSelect from '$lib';
+</script>
+
+{#each { length: 10 } as file, i}
+	<label>
+		<input type="checkbox" name="files" use:shiftSelect />
+		{i}
+	</label>
+{/each}
