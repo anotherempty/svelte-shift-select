@@ -12,6 +12,8 @@ npm install svelte-shift-select
 
 ## Usage
 
+[See the REPL](https://svelte.dev/repl/8f46cda0bc6c4f3583f29eba9fdf0f3a?version=3.48.0)
+
 ### Default usage example
 
 ```svelte
