@@ -26,6 +26,7 @@
     "random-words": "^1.1.2",
     "sirv-cli": "^2.0.0",
     "svelte-seo": "^1.4.0",
-    "svelte-shift-select": "^0.0.1"
+    "svelte-shift-select": "^0.0.1",
+    "svelte-tiny-virtual-list": "^2.0.5"
   }
 }
